@@ -1,0 +1,15 @@
+.DS_Store
+node_modules/
+exports/
+.cache/
+*.log
+projects/*/voice.input
+
+# 桌面版构建产物
+release/
+runtime/
+_build/
+__pycache__/
+
+# LivLiv 角色素材：许可禁止单独再分发，公开仓库不含此目录
+characters/

@@ -1,0 +1,81 @@
+{
+  "name": "ruic-2d",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "从一张图制作会眨眼、会说话、能上直播的 2D 虚拟形象（桌面版）",
+  "author": "HRuiCcc",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "start:desktop": "electron .",
+    "check": "node --check server.mjs && node --check public/app.js && node --check public/player.js",
+    "models": "node _build/make-icon.mjs",
+    "dist": "electron-builder --win",
+    "dist:dir": "electron-builder --win --dir"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "build": {
+    "appId": "com.ruic.ruic2d",
+    "productName": "RuiC-2D",
+    "asar": false,
+    "compression": "normal",
+    "directories": {
+      "output": "release",
+      "buildResources": "desktop/build"
+    },
+    "files": [
+      "desktop/**/*",
+      "public/**/*",
+      "characters/**/*",
+      "demo/**/*",
+      "projects/**/*",
+      "tools/**/*",
+      "runtime/python/**/*",
+      "server.mjs",
+      "art-service.mjs",
+      "validation.mjs",
+      "package.json",
+      "README.md",
+      "LICENSE",
+      "!**/*.map",
+      "!**/_build/**"
+    ],
+    "win": {
+      "icon": "desktop/build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "RuiC-2D-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "RuiC-2D 直播工作台",
+      "artifactName": "RuiC-2D-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "devDependencies": {
+    "electron": "33.4.11",
+    "electron-builder": "^25.1.8",
+    "sharp": "^0.34.0"
+  }
+}

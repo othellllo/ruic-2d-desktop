@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<title>RuiC-2D 控制台</title>
+<link rel="stylesheet" href="./panel.css">
+</head>
+<body>
+<header class="head">
+  <div class="brand">
+    <img src="./build/icon.png" alt="" class="logo">
+    <div>
+      <b>RuiC-2D</b><span>直播工作台</span>
+    </div>
+  </div>
+  <span class="ver" id="ver"></span>
+</header>
+
+<section class="status" id="status">
+  <span class="chip" data-k="server"><i></i><span>本地服务</span></span>
+  <span class="chip" data-k="python"><i></i><span>图像处理</span></span>
+  <span class="chip" data-k="ffmpeg"><i></i><span>音频转码</span></span>
+</section>
+
+<section class="hero">
+  <button class="big primary" data-act="app:live">
+    <span class="ico">●</span>
+    <span class="txt"><b>一键开播</b><small>示例角色 + 开麦 + 挂件窗口</small></span>
+  </button>
+  <button class="big" data-act="app:import">
+    <span class="ico">＋</span>
+    <span class="txt"><b>从图片制作形象</b><small>导入一张正面立绘</small></span>
+  </button>
+  <button class="big" data-act="app:open">
+    <span class="ico">▦</span>
+    <span class="txt"><b>打开工作台</b><small>继续编辑、配音与导出</small></span>
+  </button>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <h2>直播挂件</h2>
+    <button class="link" data-act="overlay:toggle" id="ov-toggle">显示</button>
+  </div>
+  <div class="row">
+    <button class="pill" data-act="overlay:pin" id="ov-pin">置顶</button>
+    <button class="pill" data-act="overlay:lock" id="ov-lock">鼠标穿透</button>
+    <button class="pill" data-act="overlay:fullscreen">全屏</button>
+  </div>
+  <div class="seg" id="bg-seg">
+    <button data-bg="transparent">透明</button>
+    <button data-bg="green">绿幕</button>
+    <button data-bg="dark">深色</button>
+  </div>
+  <div class="seg" id="size-seg">
+    <button data-size="540">540</button>
+    <button data-size="720">720</button>
+    <button data-size="1080">1080</button>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head"><h2>直播平台接入</h2><button class="link" data-act="plat:copy">复制地址</button></div>
+  <div class="seg plat" id="plat-seg">
+    <button data-plat="bili" class="on">哔哩哔哩直播姬</button>
+    <button data-plat="obs">OBS</button>
+    <button data-plat="web">其他网页源</button>
+  </div>
+  <div class="url" id="plat-url">—</div>
+  <p class="hint" id="plat-hint"></p>
+  <div class="row">
+    <button class="pill" data-act="plat:prepare" id="plat-prepare">一键准备</button>
+    <button class="pill" data-act="plat:green">切绿幕备用</button>
+  </div>
+</section>
+
+<details class="card keys">
+  <summary>快捷键（全局）</summary>
+  <div class="key-grid">
+    <kbd>Ctrl+Alt+H</kbd><span>控制台开关</span>
+    <kbd>Ctrl+Alt+P</kbd><span>挂件显示/隐藏</span>
+    <kbd>Ctrl+Alt+T</kbd><span>挂件置顶</span>
+    <kbd>Ctrl+Alt+G</kbd><span>鼠标穿透</span>
+    <kbd>Ctrl+Alt+F</kbd><span>挂件全屏</span>
+    <kbd>Ctrl+Alt+B</kbd><span>切换挂件背景</span>
+    <kbd>Ctrl+Alt+1/2/3</kbd><span>挂件 540/720/1080</span>
+  </div>
+</details>
+
+<footer class="foot">
+  <button class="mini" data-act="power:toggle" id="power">防止息屏</button>
+  <button class="mini" data-act="data:open">数据文件夹</button>
+  <button class="mini" data-act="server:restart">重启服务</button>
+  <button class="mini danger" data-act="quit">退出</button>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="./panel.js"></script>
+</body>
+</html>
