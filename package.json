@@ -10,7 +10,7 @@
     "start": "node server.mjs",
     "start:desktop": "electron .",
     "check": "node --check server.mjs && node --check public/app.js && node --check public/player.js",
-    "models": "node _build/make-icon.mjs",
+    "models": "node scripts/make-icon.mjs",
     "dist": "electron-builder --win",
     "dist:dir": "electron-builder --win --dir"
   },
