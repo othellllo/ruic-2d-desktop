@@ -149,6 +149,17 @@ npm run start:desktop       # 开发模式直接运行桌面版
 
 `runtime/` 不进 git（约 190 MB）；不打这个目录也能构建，只是「从图片制作」会提示「图像处理未就绪」。
 
+### 打一个标签就自动发布
+
+仓库带了 [`.github/workflows/build-desktop.yml`](../.github/workflows/build-desktop.yml)：在 `windows-latest` 上自动装依赖、组装 Python 运行时、打包并把安装包与 zip 传到 Releases。
+
+```bash
+git tag v1.0.1
+git push desktop v1.0.1
+```
+
+版本号会自动从标签同步到 `package.json`。也可以在 Actions 页面手动 **Run workflow**，那种情况只产出 artifact、不发 Release。
+
 ## 许可
 
 代码 MIT（见 `LICENSE`）。示例角色「大肥鱼1号」的立绘、差分与配音版权归作者，商用或再分发请先取得授权；LivLiv 角色素材见 `characters/LICENSE.md`。
