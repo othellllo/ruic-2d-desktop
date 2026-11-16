@@ -6,6 +6,8 @@
 > - 因 LivLiv 角色素材的许可禁止单独再分发，本仓库**不包含 `characters/` 目录**；需要角色案例库时请从上游仓库取回。
 > - 本仓库是一次快照提交，未携带上游完整 git 历史，便于直接下载使用与二次开发；需要同步上游时执行 `git remote add upstream https://github.com/HRuiCcc/RuiC-2D.git`。
 
+[![构建 Windows 桌面版](https://github.com/othellllo/ruic-2d-desktop/actions/workflows/build-desktop.yml/badge.svg)](https://github.com/othellllo/ruic-2d-desktop/actions/workflows/build-desktop.yml)
+[![Release](https://img.shields.io/github/v/release/othellllo/ruic-2d-desktop?label=release)](https://github.com/othellllo/ruic-2d-desktop/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)

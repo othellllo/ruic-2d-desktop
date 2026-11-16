@@ -1,0 +1,95 @@
+name: 构建 Windows 桌面版
+
+# 打 v* 标签时自动打包并发布 Release；也可以在 Actions 页面手动运行（只产出 artifact）
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 准备 Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: 准备 Python 3.11（仅用于装 wheel）
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装 npm 依赖
+        run: npm ci
+
+      - name: 缓存自带 Python 运行时
+        id: pycache
+        uses: actions/cache@v4
+        with:
+          path: runtime/python
+          key: py-runtime-win311-${{ hashFiles('requirements.txt') }}
+
+      - name: 组装自带 Python 运行时
+        if: steps.pycache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path runtime | Out-Null
+          Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip' -OutFile python-embed.zip
+          Expand-Archive -LiteralPath python-embed.zip -DestinationPath runtime/python -Force
+          python -m pip install --target runtime/python/Lib/site-packages `
+            --platform win_amd64 --python-version 3.11 --only-binary=:all: --no-cache-dir -q `
+            Pillow numpy opencv-python-headless
+          $pth = 'runtime/python/python311._pth'
+          @('python311.zip', '.', 'Lib\site-packages', '', 'import site') | Set-Content -LiteralPath $pth -Encoding ascii
+          & runtime/python/python.exe -c "import sys, cv2, numpy, PIL; print('runtime ok', sys.version.split()[0], cv2.__version__)"
+
+      - name: 生成桌面版图标
+        run: npm run models
+
+      - name: 语法检查
+        run: npm run check
+
+      - name: 让 package.json 版本与标签一致
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: npm version ($env:GITHUB_REF_NAME -replace '^v', '') --no-git-tag-version --allow-same-version
+
+      - name: 打包 Windows 产物
+        run: npx electron-builder --win --publish never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: RuiC-2D-windows
+          path: |
+            release/*.exe
+            release/*.zip
+          if-no-files-found: error
+
+      - name: 发布到 Releases
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.exe
+            release/*.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true
